@@ -1,0 +1,113 @@
+"""
+Program: CH9_P9_SGillespie.py
+Authors: Steve G and Ciara G
+Purpose: Display a random card from a standard deck of playing cards.  Allowing
+the user to draw one at a time, shuffle or reset the deck
+"""
+
+
+from breezypythongui import EasyFrame
+from tkinter import PhotoImage
+from cards import Deck, Card
+import random
+
+class RandomCard(EasyFrame):
+
+    def __init__(self):
+        EasyFrame.__init__(self, title = "Random Draw")
+        self.setSize(320, 300)
+        
+        self.deck = Deck()
+
+        self.card = 'b'
+        self.Cardtxt = ""
+
+        self.cardlabel = self.addLabel("" , row = 0,
+                                       column = 1,
+                                       sticky = "NSEW",
+                                       columnspan = 1)
+        self.cardlabel_txt = self.addLabel(text = self.Cardtxt, row = 1,
+                                     column = 1,
+                                     sticky = "NSEW",
+                                     columnspan = 1)
+
+        self.addButton(text = "Deal", row = 2, column = 0,\
+                       command = self.dealCard)
+        self.addButton(text = "Shuffle", row = 2, column = 1,\
+                       command = self.shuffleDeck)
+        self.addButton(text = "Reset Deck", row = 2, column = 2,\
+                       command = self.resetDeck)
+
+        self.refreshImages()
+        
+    def dealCard(self):
+        self.card = self.deck.deal()
+        self.convert()
+
+    def shuffleDeck(self):
+        self.deck.shuffle()
+        self.card = 'b'
+        self.addLabel("", row = 1,
+                                     column = 1,
+                                     sticky = "NSEW",
+                                     columnspan = 1)
+        self.refreshImages()
+    
+    def resetDeck(self):
+        self.deck = Deck()
+        self.card = 'b'
+        self.addLabel("", row = 1,
+                                     column = 1,
+                                     sticky = "NSEW",
+                                     columnspan = 1)
+        self.refreshImages()
+        
+    def refreshImages(self):
+        """Updates the images in the window."""
+        fileName = "DECK/" + str(self.card) + ".gif"
+        self.image = PhotoImage(file = fileName)
+        self.cardlabel["image"] = self.image
+
+    def convert(self):
+        
+        self.display_label()
+        
+        rank = ''
+        suit = ''
+        card_parts = str(self.card).split()
+        print(card_parts)
+        if card_parts[0] == "Ace":
+            rank = '1'
+        elif card_parts[0] == "Jack":
+            rank = '11'
+        elif card_parts[0] == "Queen":
+            rank = '12'
+        elif card_parts[0] == "King":
+            rank = '13'
+        else:
+            rank = card_parts[0]
+
+        if card_parts[2] == "Spades":
+            suit = 's'
+        if card_parts[2] == "Clubs":
+            suit = 'c'
+        if card_parts[2] == "Diamonds":
+            suit = 'd'
+        if card_parts[2] == "Hearts":
+            suit = 'h'
+
+        self.card = (rank + suit)
+        self.refreshImages()
+
+    def display_label(self):
+        self.addLabel(str(self.card), row = 1,
+                                     column = 1,
+                                     sticky = "NSEW",
+                                     columnspan = 1)
+
+        
+def main():
+    RandomCard().mainloop()
+
+if __name__ == "__main__":
+    main()
