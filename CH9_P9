@@ -4,7 +4,7 @@ Authors: Steve G and Ciara G
 Purpose: Display a random card from a standard deck of playing cards.  Allowing
 the user to draw one at a time, shuffle or reset the deck
 """
-
+# Importing breezypythongui to create window frame
 
 from breezypythongui import EasyFrame
 from tkinter import PhotoImage
@@ -13,6 +13,7 @@ import random
 
 class RandomCard(EasyFrame):
 
+# Set up constructor to open window with deck image included
     def __init__(self):
         EasyFrame.__init__(self, title = "Random Draw")
         self.setSize(320, 300)
@@ -40,6 +41,7 @@ class RandomCard(EasyFrame):
 
         self.refreshImages()
         
+# These functions are for controlling deck actions        
     def dealCard(self):
         self.card = self.deck.deal()
         self.convert()
